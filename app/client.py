@@ -1,10 +1,9 @@
-import os
-
 from aiogram import Router, F
 from aiogram.filters import CommandStart
-from aiogram.types import Message
+from aiogram.types import Message, ReplyKeyboardRemove
 
 import app.keyboard as kb
+from converter import excel_sql
 
 
 client = Router()
@@ -18,7 +17,16 @@ async def cmd_start(message: Message):
 
 
 @client.message(F.text == '✉️ Начать новую рассылку')
-async def 
+async def new_mail(message: Message):
+    await message.answer('Загрузите файл', reply_markup=ReplyKeyboardRemove())
+
+
+@client.message(F.document)
+async def converter(message: Message):
+    await message.answer(f'ID документа: {message.document}')
+
+    doc = message.document.file_name
+    excel_sql(doc)
 
 
 @client.message()

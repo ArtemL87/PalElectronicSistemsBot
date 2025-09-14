@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 from app.client import client
 
 
+load_dotenv()
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(name)s - %(message)s')
 
