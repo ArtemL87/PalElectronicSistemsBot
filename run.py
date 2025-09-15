@@ -6,6 +6,7 @@ from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
 
 from app.client import client
+from app.database.models import init_models
 
 
 load_dotenv()
@@ -25,6 +26,7 @@ async def main():
 
 
 async def startup(dispatcher: Dispatcher):
+    await init_models()
     logging.info('Bot started up...')
 
 
