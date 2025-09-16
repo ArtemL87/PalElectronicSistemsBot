@@ -9,8 +9,8 @@ menu = ReplyKeyboardMarkup(keyboard=[
 )
 
 
-async def go_score(mission_id):
+async def go_score():
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text='▶️ Разослать задолжности', callback_data=f'clean_{mission_id}')],
-        [InlineKeyboardButton(text='🔙 Назад', callback_data='mission')]
+        [InlineKeyboardButton(text='▶️ Разослать письма', callback_data='push')],
+        [InlineKeyboardButton(text='🔙 Назад', callback_data='start')]
     ])
