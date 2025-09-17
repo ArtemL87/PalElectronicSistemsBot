@@ -2,11 +2,8 @@ import re
 
 def is_valid_kg(phone: str) -> bool:
     """
-    Проверка номеров Кыргызстана:
-    +996XXXXXXXXX (12 символов, код страны)
-    0XXXXXXXXX (10 символов, локальный формат)
+    Проверка номера Кыргызстана в формате:
+    996XXXXXXXXX (12 цифр: код 996 + 9 цифр)
     """
-    s = re.sub(r"[ \-\(\)]", "", phone)  # убираем пробелы, дефисы, скобки
-
-    pattern = r"^(?:\+996\d{9}|0\d{9})$"
-    return bool(re.fullmatch(pattern, s))
+    s = re.sub(r"\D", "", phone)  # убираем все кроме цифр
+    return bool(re.fullmatch(r"996\d{9}", s))

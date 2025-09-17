@@ -5,7 +5,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message, ReplyKeyboardRemove, CallbackQuery
 
 import app.keyboard as kb
-from app.converter import excel_sql
+from converter import excel_sql
 from app.valid_kg import is_valid_kg
 from app.database.requests import get_users, get_phone
 
@@ -77,6 +77,9 @@ async def go(callback: CallbackQuery):
             dict_phones[phone[0]] = f'+{phone[1]}'
         else:
             incorrect_number_format.append((phone[0], phone[1]))
+
+    for key, value in dict_phones.items():
+        print(key, ":", value)
 
     account_without_phone_number = []
 
