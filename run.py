@@ -5,7 +5,7 @@ import logging
 from aiogram import Bot, Dispatcher
 from dotenv import load_dotenv
 
-from app.client import client
+from bot.client import client
 
 
 load_dotenv()

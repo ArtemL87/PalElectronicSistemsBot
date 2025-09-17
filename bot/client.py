@@ -1,13 +1,14 @@
-from datetime import date
+from datetime import date, datetime
 
+import pywhatkit as kit
 from aiogram import Router, F
 from aiogram.filters import CommandStart
 from aiogram.types import Message, ReplyKeyboardRemove, CallbackQuery
 
-import app.keyboard as kb
+import bot.keyboard as kb
 from converter import excel_sql
-from app.valid_kg import is_valid_kg
-from app.database.requests import get_users, get_phone
+from bot.valid_kg import is_valid_kg
+from bot.database.requests import get_users, get_phone
 
 
 client = Router()
@@ -41,7 +42,7 @@ async def converter(message: Message):
                 debt -= int(user[13])
                 x += 1
 
-        await message.answer(f'На {date.today()}:\n'
+        await message.answer(f'На {date.today()}\n'
                              f'Количество задолжников: {x} квартир\n'
                              f'Общая сумма задолжности: {debt} сом\n\n'
                              f'👇 Пример рассылки')
@@ -78,15 +79,23 @@ async def go(callback: CallbackQuery):
         else:
             incorrect_number_format.append((phone[0], phone[1]))
 
-    for key, value in dict_phones.items():
-        print(key, ":", value)
-
     account_without_phone_number = []
 
     x = 0
     for user in users:
         if user[11] and user[13] < 0:
             try:
+                text = f'Счет: {user[1]}\n\n' \
+                       f'ФИО: {user[2]}\n' \
+                       f'Адрес: {user[4]}, дом {user[5]}, кв. {user[6]}\n\n' \
+                       f'Тариф: {user[11]}\n' \
+                       f'Баланс: {user[13]} сом\n\n' \
+                       f'Номер: {dict_phones[user[1]]}\n' \
+                       f'Необходимо оплатить до 20 числа!'
+
+                now = datetime.now()
+                kit.sendwhatmsg(dict_phones[user[1]], text, now.hour, now.minute + 1)
+
                 await callback.message.answer(f'Счет: {user[1]}\n\n'
                                               f'ФИО: {user[2]}\n'
                                               f'Адрес: {user[4]}, дом {user[5]}, кв. {user[6]}\n\n'
@@ -97,8 +106,6 @@ async def go(callback: CallbackQuery):
                 x += 1
             except KeyError:
                 account_without_phone_number.append(user[1])
-
-
 
     await callback.message.answer(f'✅ Процесс рассылки окончен\n\n'
                                   f'💬 Сообщения отправлены {x} абонентам',
